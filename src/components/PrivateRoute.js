@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -9,7 +9,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        currentUser ? <Component {...props} /> : <Redirect to="/login" />
+        currentUser ? <Component {...props} /> : <Navigate to="/login" />
       }
     />
   );

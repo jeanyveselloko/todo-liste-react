@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useHistory } from 'react-router-dom';
-import TodoLists from '../components/ToDoLists';
+import { useNavigate } from 'react-router-dom';
+import TodoLists from '../components/TodoLists';
 
 const Dashboard = () => {
   const { currentUser, logout } = useAuth();
-  const history = useHistory();
+  const history = useNavigate();
 
   const handleLogout = async () => {
     try {

@@ -1,30 +1,25 @@
 import React, { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const SignUp = () => {
+const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
-  const { signup } = useAuth();
+  const { login } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const history = useNavigate();
+  const history = useNavigate ();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
-      return setError('Passwords do not match');
-    }
-
     try {
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current.value, passwordRef.current.value);
       history.push('/dashboard');
     } catch {
-      setError('Failed to create an account');
+      setError('Failed to log in');
     }
 
     setLoading(false);
@@ -32,7 +27,7 @@ const SignUp = () => {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>Log In</h2>
       {error && <div>{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -43,17 +38,13 @@ const SignUp = () => {
           <label>Password</label>
           <input type="password" ref={passwordRef} required />
         </div>
-        <div>
-          <label>Confirm Password</label>
-          <input type="password" ref={confirmPasswordRef} required />
-        </div>
-        <button disabled={loading} type="submit">Sign Up</button>
+        <button disabled={loading} type="submit">Log In</button>
       </form>
       <div>
-        Already have an account? <Link to="/login">Log In</Link>
+        Need an account? <Link to="/signup">Sign Up</Link>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;

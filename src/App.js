@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
@@ -10,12 +10,14 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Switch>
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          {/* Ajoutez d'autres routes ici si nécessaire */}
-        </Switch>
+        <Routes>
+          {/* Route publique */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          
+          {/* Utilisation de PrivateRoute pour la route protégée */}
+          <PrivateRoute path="/" element={<Dashboard />} />
+        </Routes>
       </AuthProvider>
     </Router>
   );
