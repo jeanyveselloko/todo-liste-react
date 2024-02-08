@@ -1,22 +1,59 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import React, { useRef, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyChosrPtRMeg9RBndeO81-zZHAPSfhPuDo",
-    authDomain: "to-do-list-52e44.firebaseapp.com",
-    projectId: "to-do-list-52e44",
-    storageBucket: "to-do-list-52e44.appspot.com",
-    messagingSenderId: "503199165666",
-    appId: "1:503199165666:web:8c18ceffa9b894f496c2bb",
-    measurementId: "G-EBFLRS625J"
+const SignUp = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
+  const { signup } = useAuth();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      return setError('Passwords do not match');
+    }
+
+    try {
+      setError('');
+      setLoading(true);
+      await signup(emailRef.current.value, passwordRef.current.value);
+      history.push('/dashboard');
+    } catch {
+      setError('Failed to create an account');
+    }
+
+    setLoading(false);
   };
-  
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+  return (
+    <div>
+      <h2>Sign Up</h2>
+      {error && <div>{error}</div>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email</label>
+          <input type="email" ref={emailRef} required />
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" ref={passwordRef} required />
+        </div>
+        <div>
+          <label>Confirm Password</label>
+          <input type="password" ref={confirmPasswordRef} required />
+        </div>
+        <button disabled={loading} type="submit">Sign Up</button>
+      </form>
+      <div>
+        Already have an account? <Link to="/login">Log In</Link>
+      </div>
+    </div>
+  );
+};
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
-
-export default firebase;
+export default SignUp;
