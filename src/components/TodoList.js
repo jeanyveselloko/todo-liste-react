@@ -10,7 +10,7 @@ const TodoList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (taskName.trim() !== '') {
+    if (taskName.trim() !== '' && list) {
       await addDocument({
         tasks: [...list.tasks, { name: taskName, completed: false }]
       }, id);
@@ -33,7 +33,7 @@ const TodoList = () => {
         <button type="submit">Add Task</button>
       </form>
       <ul>
-        {list.tasks.map((task, index) => (
+        {list.tasks && list.tasks.map((task, index) => (
           <li key={index}>{task.name}</li>
         ))}
       </ul>

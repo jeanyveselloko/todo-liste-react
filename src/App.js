@@ -5,6 +5,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
+import TodoLists from './components/TodoLists';
+import TodoList from './components/TodoList';
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           
           {/* Utilisation de PrivateRoute pour la route protégée */}
-          <PrivateRoute path="/" element={<Dashboard />} />
+          <Route path="/" element={<PrivateRoute component={Dashboard} />} />
+          <Route path="/lists" element={<TodoLists />} />
+          <Route path="/lists/:id" element={<TodoList />} />
         </Routes>
       </AuthProvider>
     </Router>

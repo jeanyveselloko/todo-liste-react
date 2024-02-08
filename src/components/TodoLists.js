@@ -6,6 +6,10 @@ import ListForm from './ListForm';
 const TodoLists = () => {
   const { data: lists } = useFirestore('lists');
 
+   // Vérifie si les listes de tâches sont chargées
+   if (!lists) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
       <h2>Lists of Tasks</h2>
