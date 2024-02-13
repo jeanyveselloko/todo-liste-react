@@ -4,14 +4,14 @@ import { useFirestore } from '../hooks/useFirestore';
 
 const TodoList = () => {
   const { id } = useParams();
-  const { data: list, addDocument } = useFirestore('lists');
+  const { data: list, updateDocument } = useFirestore('lists');
 
   const [taskName, setTaskName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (taskName.trim() !== '' && list) {
-      await addDocument({
+    if (taskName.trim() !== '' && list && list.tasks) { // Assurez-vous que list et list.tasks sont définis
+      await updateDocument({
         tasks: [...list.tasks, { name: taskName, completed: false }]
       }, id);
       setTaskName('');

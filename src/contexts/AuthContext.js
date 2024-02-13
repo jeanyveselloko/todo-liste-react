@@ -1,25 +1,26 @@
+// AuthContext.js
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from '../firebase/firebase';
 
-// Création du contexte d'authentification
 const AuthContext = createContext();
 
-// Hook personnalisé pour accéder au contexte d'authentification
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-// Provider pour le contexte d'authentification
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fonction pour inscrire un utilisateur avec email et mot de passe
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
 
-  // Effet pour mettre à jour l'utilisateur actuel dès que l'authentification change
+  function login(email, password) {
+    return auth.signInWithEmailAndPassword(email, password);
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
@@ -31,7 +32,8 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
-    signup
+    signup,
+    login // Add login function to context value
   };
 
   return (
